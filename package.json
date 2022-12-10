@@ -1,0 +1,33 @@
+{
+  "name": "gpt-search-helper",
+  "version": "0.0.1",
+  "description": "A browser extension to add ChatGPT results to your search results",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "lint": "eslint --ext ts src",
+    "build": "rollup -c",
+    "clean-build": "npm run lint && npm run build-ts && rollup -c",
+    "build-ts": "rm -rf bin && npm run tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pshihn/gpt-search-helper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pshihn/gpt-search-helper/issues"
+  },
+  "homepage": "https://github.com/pshihn/gpt-search-helper#readme",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.46.0",
+    "chrome-types": "^0.1.153",
+    "eslint": "^8.29.0",
+    "rollup": "^3.7.1",
+    "typescript": "^4.9.4"
+  }
+}
