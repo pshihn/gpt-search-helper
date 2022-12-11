@@ -24,6 +24,14 @@
         "https://chat.openai.com/chat/",
         "https://chat.openai.com/chat/*"
       ]
+    },
+    {
+      "js": [
+        "lib/google-content.js"
+      ],
+      "matches": [
+        "https://www.google.com/search?*"
+      ]
     }
   ]
 }

@@ -14,5 +14,16 @@ export interface ChatRxMessage {
   error?: string;
 }
 
+export interface GoogleTxMessage {
+  type: 'q';
+  body: string;
+}
+
+export interface GoogleRxMessage {
+  type: 'processing' | 'answer' | 'error';
+  q?: string;
+  body: string;
+}
+
 export const PORT_CHAT_WINDOW = '__bg-chat__';
 export const PORT_GOOGLE_WINDOW = '__bg-google__';

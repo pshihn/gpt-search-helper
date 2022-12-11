@@ -5,6 +5,7 @@ const outFolder = 'lib';
 const inputs = [
   'background',
   'chat-content',
+  'google-content',
 ];
 
 export default inputs.map((d) => {
