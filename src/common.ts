@@ -27,3 +27,11 @@ export interface GoogleRxMessage {
 
 export const PORT_CHAT_WINDOW = '__bg-chat__';
 export const PORT_GOOGLE_WINDOW = '__bg-google__';
+
+export async function wait(time: number) {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
+  });
+}
