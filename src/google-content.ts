@@ -1,9 +1,11 @@
 import 'chrome-types';
 import { GoogleRxMessage, GoogleTxMessage, PORT_GOOGLE_WINDOW } from './common.js';
+import { ResultsPanel } from './results-panel.js';
 
 
 let _port: chrome.runtime.Port | null = null;
 let _q: string | null = null;
+let _panel: ResultsPanel | null = null;
 
 function detectQuery(): string | null {
   const searchParams = new URLSearchParams(window.location.search);
@@ -38,6 +40,15 @@ function initialize() {
       console.log('Received message from background:', message);
     });
     sendQuery(q);
+
+    // TODO:
+    injectPanel();
+  }
+}
+
+function injectPanel() {
+  if (!_panel) {
+    _panel = new ResultsPanel(document.body);
   }
 }
 

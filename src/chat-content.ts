@@ -18,7 +18,7 @@ chrome.runtime.onConnect.addListener((port) => {
 });
 
 function sendResponse(id: string, body: string) {
-  if (_port) {
+  if (_port && body) {
     const msg: ChatRxMessage = {
       id,
       type: 'a',
@@ -58,16 +58,10 @@ async function queryGpt(message: ChatTxMessage) {
 
 async function listenForContent(div: HTMLDivElement, messageId: string) {
   const observer = new MutationObserver(() => {
-    const txt = div.textContent || '';
-    if (txt) {
-      sendResponse(messageId, div.textContent || '');
-    }
+    sendResponse(messageId, div.innerHTML.trim());
   });
   observer.observe(div, { subtree: true, characterData: true, childList: true });
-  const txt = div.textContent || '';
-  if (txt) {
-    sendResponse(messageId, div.textContent || '');
-  }
+  sendResponse(messageId, div.innerHTML.trim());
 }
 
 function findResponseNodes(): HTMLDivElement[] {
