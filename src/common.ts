@@ -20,7 +20,7 @@ export interface GoogleTxMessage {
 }
 
 export interface GoogleRxMessage {
-  type: 'processing' | 'answer' | 'error';
+  type: 'no-gpt' | 'answer' | 'error';
   q?: string;
   body: string;
 }

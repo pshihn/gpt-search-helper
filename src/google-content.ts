@@ -27,28 +27,53 @@ function sendQuery(q: string) {
   }
 }
 
+function injectPanel() {
+  if (!_panel) {
+    _panel = new ResultsPanel(document.body);
+  }
+}
 
 function initialize() {
   const q = detectQuery();
   if (q) {
     console.log('Query detected:', q);
+    injectPanel();
+
     _port = chrome.runtime.connect(undefined, { name: PORT_GOOGLE_WINDOW });
     _port.onDisconnect.addListener(() => {
       _port = null;
     });
     _port.onMessage.addListener((message: GoogleRxMessage) => {
-      console.log('Received message from background:', message);
+      handleMessage(message);
     });
     sendQuery(q);
 
-    // TODO:
-    injectPanel();
+    if (_panel) {
+      _panel.setState('waiting-for-gpt');
+    }
   }
 }
 
-function injectPanel() {
-  if (!_panel) {
-    _panel = new ResultsPanel(document.body);
+function handleMessage(message: GoogleRxMessage) {
+  switch (message.type) {
+    case 'no-gpt': {
+      if (_panel) {
+        _panel.setState('no-gpt');
+      }
+      break;
+    }
+    case 'answer': {
+      if (_panel && (_q === message.q)) {
+        _panel.setState('response', message.body);
+      }
+      break;
+    }
+    case 'error': {
+      if (_panel && (_q === message.q)) {
+        _panel.setState('error', message.body);
+      }
+      break;
+    }
   }
 }
 
