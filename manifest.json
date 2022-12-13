@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "GPT Search Helper",
+  "version": "0.2",
+  "description": "A plugin that augments Google and Stackoverflow search results with ChatGPT responses.",
+  "icons": {
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "permissions": [
+    "webNavigation",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "lib/background.js"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "js": [
+        "lib/chat-content.js"
+      ],
+      "matches": [
+        "https://chat.openai.com/chat/",
+        "https://chat.openai.com/chat/*"
+      ]
+    },
+    {
+      "js": [
+        "lib/google-content.js"
+      ],
+      "matches": [
+        "https://www.google.com/search?*",
+        "https://www.google.ca/search?*",
+        "https://www.google.dk/search?*",
+        "https://www.google.de/search?*",
+        "https://www.google.de/search?*",
+        "https://www.google.com.au/search?*",
+        "https://www.google.co.uk/search?*",
+        "https://www.google.co.nz/search?*",
+        "https://stackoverflow.com/search?*"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>GPT Search Helper Options</title>
+  <style>
+    body {
+      font-size: 16px;
+      font-family: system-ui, sans-serif;
+      background: #fafafa;
+      margin: 0;
+    }
+
+    input {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: 300;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>GPT Search Helper Options</h1>
+    <p>
+      <input id="autoSearch" type="checkbox">
+      <label for="autoSearch">Automatically search on ChatGPT when you search on Google or Stackoverlow. </label>
+    </p>
+    <p>
+      <em>Note: You may inadvertently reach your ChatGPT api limits if you have this checked.</em>
+    </p>
+  </main>
+  <script src="options.js"></script>
+</body>
+
+</html>
