@@ -10,21 +10,28 @@ chrome.runtime.onConnect.addListener((port) => {
     });
     port.onMessage.addListener((message: ChatTxMessage) => {
       handleMessage(message);
-      // console.log('Content script message received', message);
-      // port.postMessage({ message: 'Hello back content script' });
     });
     _port = port;
   }
 });
 
-function sendResponse(id: string, body: string) {
-  if (_port && body) {
-    const msg: ChatRxMessage = {
-      id,
-      type: 'a',
-      body
-    };
-    _port.postMessage(msg);
+function sendResponse(id: string, div: HTMLElement) {
+  const body = ((div.textContent || '').trim().length > 3) ? div.innerHTML.trim() : '';
+  if (_port) {
+    if (body) {
+      const msg: ChatRxMessage = {
+        id,
+        type: 'a',
+        body
+      };
+      _port.postMessage(msg);
+    } else {
+      const msg: ChatRxMessage = {
+        id,
+        type: 'waiting'
+      };
+      _port.postMessage(msg);
+    }
   }
 }
 
@@ -58,10 +65,10 @@ async function queryGpt(message: ChatTxMessage) {
 
 async function listenForContent(div: HTMLDivElement, messageId: string) {
   const observer = new MutationObserver(() => {
-    sendResponse(messageId, div.innerHTML.trim());
+    sendResponse(messageId, div);
   });
   observer.observe(div, { subtree: true, characterData: true, childList: true });
-  sendResponse(messageId, div.innerHTML.trim());
+  sendResponse(messageId, div);
 }
 
 function findResponseNodes(): HTMLDivElement[] {

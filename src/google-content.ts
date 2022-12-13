@@ -30,6 +30,9 @@ function sendQuery(q: string) {
 function injectPanel() {
   if (!_panel) {
     _panel = new ResultsPanel(document.body);
+    document.body.addEventListener('try-again', () => {
+      initialize();
+    });
   }
 }
 
@@ -71,6 +74,12 @@ function handleMessage(message: GoogleRxMessage) {
     case 'error': {
       if (_panel && (_q === message.q)) {
         _panel.setState('error', message.body);
+      }
+      break;
+    }
+    case 'waiting': {
+      if (_panel && (_q === message.q)) {
+        _panel.setState('waiting-for-gpt');
       }
       break;
     }

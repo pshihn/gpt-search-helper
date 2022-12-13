@@ -83,6 +83,7 @@ export class ResultsPanel {
           pointer-events: auto;
           outline: none;
         }
+        button.action,
         a.button {
           background: #D1C4E9;
           color: #7E57C2;
@@ -93,6 +94,14 @@ export class ResultsPanel {
           text-align: center;
           letter-spacing: 1.5px;
           text-decoration: none;
+        }
+        button.action {
+          border: none;
+          font-size: 14px;
+          line-height: 16px;
+          text-transform: uppercase;
+          height: 40px;
+          cursor: pointer;
         }
         #errorPanel {
           color: indianred;
@@ -140,8 +149,11 @@ export class ResultsPanel {
   private _setPanelState(state: PanelState) {
     if (this._panelState !== state) {
       this._panelState = state;
-      this._renderPanel();
+      if ((state === 'response') && (this._openState === 'closed')) {
+        this._toggleOpenState();
+      }
     }
+    this._renderPanel();
   }
 
   private _renderPanel() {
@@ -168,7 +180,13 @@ export class ResultsPanel {
       case 'waiting-for-gpt': {
         this._panel.innerHTML = `
           <p>Waiting for ChatGPT response...</p>
+          <p>
+            <button id="tryAgainButton" class="action">Try again</a>
+          </p>
         `;
+        this._root.querySelector('#tryAgainButton')?.addEventListener('click', () => {
+          this._parent.dispatchEvent(new Event('try-again'));
+        });
         break;
       }
       case 'response': {

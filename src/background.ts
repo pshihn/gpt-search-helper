@@ -1,5 +1,5 @@
 import 'chrome-types';
-import { ChatTxMessage, ChatRxMessage, PORT_CHAT_WINDOW, PORT_GOOGLE_WINDOW, GoogleTxMessage } from './common.js';
+import { ChatTxMessage, ChatRxMessage, PORT_CHAT_WINDOW, PORT_GOOGLE_WINDOW, GoogleTxMessage, GoogleRxMessage } from './common.js';
 
 interface ChatTab {
   id: number;
@@ -8,6 +8,7 @@ interface ChatTab {
 
 interface GooggleTabState {
   chatQueryId?: string;
+  q?: string;
 }
 
 let _chatTab: ChatTab | null = null;
@@ -30,7 +31,7 @@ function attachToChatTab(tabId: number) {
     disconnectChatTab();
   });
   port.onMessage.addListener((message: ChatRxMessage) => {
-    console.log('Received message from chat tab:', message);
+    handleChatMessage(message);
   });
   _chatTab = { id: tabId, port };
 }
@@ -62,10 +63,48 @@ function handleGoogleMessage(port: chrome.runtime.Port, message: GoogleTxMessage
           const chatQuery = sendQuery(body);
           if (chatQuery) {
             state.chatQueryId = chatQuery?.id;
+            state.q = body;
+          } else {
+            const msg: GoogleRxMessage = {
+              type: 'no-gpt'
+            };
+            port.postMessage(msg);
           }
         }
         break;
       }
+    }
+  }
+}
+
+function handleChatMessage(message: ChatRxMessage) {
+  switch (message.type) {
+    case 'a': {
+      for (const key of _googlePortMap.keys()) {
+        const tabState = _googlePortMap.get(key);
+        if (tabState && tabState.chatQueryId === message.id) {
+          const msg: GoogleRxMessage = {
+            type: 'answer',
+            q: tabState.q,
+            body: message.body || ''
+          };
+          key.postMessage(msg);
+        }
+      }
+      break;
+    }
+    case 'waiting': {
+      for (const key of _googlePortMap.keys()) {
+        const tabState = _googlePortMap.get(key);
+        if (tabState && tabState.chatQueryId === message.id) {
+          const msg: GoogleRxMessage = {
+            type: 'waiting',
+            q: tabState.q
+          };
+          key.postMessage(msg);
+        }
+      }
+      break;
     }
   }
 }

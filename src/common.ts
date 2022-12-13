@@ -1,5 +1,5 @@
 export type ChatTxType = 'q';
-export type ChatRxType = 'a';
+export type ChatRxType = 'a' | 'waiting';
 
 export interface ChatTxMessage {
   id: string;
@@ -20,9 +20,9 @@ export interface GoogleTxMessage {
 }
 
 export interface GoogleRxMessage {
-  type: 'no-gpt' | 'answer' | 'error';
+  type: 'no-gpt' | 'answer' | 'error' | 'waiting';
   q?: string;
-  body: string;
+  body?: string;
 }
 
 export const PORT_CHAT_WINDOW = '__bg-chat__';
