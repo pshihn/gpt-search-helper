@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GPT Search Helper",
-  "version": "0.1",
+  "version": "0.2",
   "description": "A plugin that augments Google and Stackoverflow search results with ChatGPT responses.",
   "icons": {
     "16": "images/icon16.png",

@@ -16,6 +16,7 @@ chrome.runtime.onConnect.addListener((port) => {
 });
 
 function sendResponse(id: string, div: HTMLElement) {
+  div.querySelectorAll('button').forEach((d) => d.remove());
   const body = ((div.textContent || '').trim().length > 3) ? div.innerHTML.trim() : '';
   if (_port) {
     if (body) {

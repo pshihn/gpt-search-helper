@@ -31,17 +31,28 @@ function injectPanel() {
   if (!_panel) {
     _panel = new ResultsPanel(document.body);
     document.body.addEventListener('try-again', () => {
+      runQuery();
       initialize();
     });
   }
 }
 
 function initialize() {
+  injectPanel();
+}
+
+function runQuery() {
   const q = detectQuery();
   if (q) {
     console.log('Query detected:', q);
-    injectPanel();
-
+    if (_port) {
+      try {
+        _port.disconnect();
+      } catch (e) {
+        // ignore
+      }
+      _port = null;
+    }
     _port = chrome.runtime.connect(undefined, { name: PORT_GOOGLE_WINDOW });
     _port.onDisconnect.addListener(() => {
       _port = null;

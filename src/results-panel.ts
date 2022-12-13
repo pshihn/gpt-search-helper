@@ -22,6 +22,8 @@ export class ResultsPanel {
 
     this._root = this._rootElement.attachShadow({ mode: 'open' });
     this._root.innerHTML = `
+      <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
       <style>
         :host {
           display: block;
@@ -131,6 +133,9 @@ export class ResultsPanel {
         this._fab.classList.add('open');
         this._panel.classList.add('open');
         this._fabButton.textContent = 'x';
+        if (!this._response) {
+          this._tryQuery();
+        }
         break;
       case 'open':
         this._openState = 'closed';
@@ -156,6 +161,10 @@ export class ResultsPanel {
     this._renderPanel();
   }
 
+  private _tryQuery() {
+    this._parent.dispatchEvent(new Event('try-again'));
+  }
+
   private _renderPanel() {
     switch (this._panelState) {
       case 'initial': {
@@ -170,7 +179,7 @@ export class ResultsPanel {
             <div>
               <p>No ChatGPT tab detected. You need to be logged into ChatGPT in one of the browser tabs.</p>
               <p>
-                <a class="button" href="https://chat.openai.com/chat" target="_blank" rel="noopener">Open ChatGPT</a>\
+                <a class="button" href="https://chat.openai.com/chat" target="_blank" rel="noopener">OPEN ChatGPT</a>\
               </p>
               <p>
                 <button id="tryAgainButton" class="action">Try again</a>
@@ -178,9 +187,7 @@ export class ResultsPanel {
             </div>
           </div>
         `;
-        this._root.querySelector('#tryAgainButton')?.addEventListener('click', () => {
-          this._parent.dispatchEvent(new Event('try-again'));
-        });
+        this._root.querySelector('#tryAgainButton')?.addEventListener('click', () => this._tryQuery());
         break;
       }
       case 'waiting-for-gpt': {
@@ -190,9 +197,7 @@ export class ResultsPanel {
             <button id="tryAgainButton" class="action">Try again</a>
           </p>
         `;
-        this._root.querySelector('#tryAgainButton')?.addEventListener('click', () => {
-          this._parent.dispatchEvent(new Event('try-again'));
-        });
+        this._root.querySelector('#tryAgainButton')?.addEventListener('click', () => this._tryQuery());
         break;
       }
       case 'response': {
@@ -204,8 +209,12 @@ export class ResultsPanel {
         <div id="errorPanel">
           <p>Error:</p>
           <p>${this._response || 'Unknown'}</p>
+          <p>
+            <button id="tryAgainButton" class="action">Try again</a>
+          </p>
         </div>
         `;
+        this._root.querySelector('#tryAgainButton')?.addEventListener('click', () => this._tryQuery());
         break;
       }
     }
