@@ -170,11 +170,17 @@ export class ResultsPanel {
             <div>
               <p>No ChatGPT tab detected. You need to be logged into ChatGPT in one of the browser tabs.</p>
               <p>
-                <a class="button" href="https://chat.openai.com/chat" target="_blank" rel="noopener">Open ChatGPT</a>
+                <a class="button" href="https://chat.openai.com/chat" target="_blank" rel="noopener">Open ChatGPT</a>\
+              </p>
+              <p>
+                <button id="tryAgainButton" class="action">Try again</a>
               </p>
             </div>
           </div>
         `;
+        this._root.querySelector('#tryAgainButton')?.addEventListener('click', () => {
+          this._parent.dispatchEvent(new Event('try-again'));
+        });
         break;
       }
       case 'waiting-for-gpt': {

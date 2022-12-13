@@ -86,5 +86,4 @@ function handleMessage(message: GoogleRxMessage) {
   }
 }
 
-console.log('Google content script loaded.');
 initialize();

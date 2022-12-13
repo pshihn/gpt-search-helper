@@ -75,5 +75,3 @@ function findResponseNodes(): HTMLDivElement[] {
   const responses = document.querySelectorAll('div[class*="request-"]') as NodeListOf<HTMLDivElement>;
   return responses ? Array.from(responses) : [];
 }
-
-console.log('Chat content script loaded');

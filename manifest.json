@@ -30,7 +30,8 @@
         "lib/google-content.js"
       ],
       "matches": [
-        "https://www.google.com/search?*"
+        "https://www.google.com/search?*",
+        "https://stackoverflow.com/search?*"
       ]
     }
   ]

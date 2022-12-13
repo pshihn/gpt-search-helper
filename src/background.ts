@@ -124,11 +124,9 @@ chrome.webNavigation.onCompleted.addListener((details) => {
 // Receive connections from Google search
 chrome.runtime.onConnect.addListener((port) => {
   if (port.name === PORT_GOOGLE_WINDOW) {
-    console.log('Google window connected');
     _googlePortMap.set(port, {});
 
     port.onDisconnect.addListener(() => {
-      console.log('Google window disconnected');
       _googlePortMap.delete(port);
     });
 
@@ -137,4 +135,3 @@ chrome.runtime.onConnect.addListener((port) => {
     });
   }
 });
-console.log('Background script loaded');
