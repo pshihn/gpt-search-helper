@@ -10,11 +10,13 @@
     "128": "images/icon128.png"
   },
   "permissions": [
-    "webNavigation"
+    "webNavigation",
+    "storage"
   ],
   "background": {
     "service_worker": "lib/background.js"
   },
+  "options_page": "options.html",
   "content_scripts": [
     {
       "js": [

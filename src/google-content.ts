@@ -27,18 +27,24 @@ function sendQuery(q: string) {
   }
 }
 
-function injectPanel() {
+function injectPanel(autoSearch: boolean) {
   if (!_panel) {
-    _panel = new ResultsPanel(document.body);
+    _panel = new ResultsPanel(document.body, autoSearch);
     document.body.addEventListener('try-again', () => {
       runQuery();
-      initialize();
     });
+    if (autoSearch) {
+      runQuery();
+    }
   }
 }
 
 function initialize() {
-  injectPanel();
+  chrome.storage.sync.get({
+    autoSearch: false
+  }, function (items) {
+    injectPanel(items.autoSearch || false);
+  });
 }
 
 function runQuery() {

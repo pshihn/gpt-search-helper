@@ -14,9 +14,11 @@ export class ResultsPanel {
   private _fab: HTMLDivElement;
   private _fabButton: HTMLButtonElement;
   private _response?: string;
+  private _autoSearch: boolean;
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, autoSearch: boolean) {
     this._parent = parent;
+    this._autoSearch = autoSearch;
     this._rootElement = document.createElement('div');
     this._parent.appendChild(this._rootElement);
 
@@ -133,7 +135,7 @@ export class ResultsPanel {
         this._fab.classList.add('open');
         this._panel.classList.add('open');
         this._fabButton.textContent = 'x';
-        if (!this._response) {
+        if ((!this._autoSearch) && (!this._response)) {
           this._tryQuery();
         }
         break;
