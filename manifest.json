@@ -31,6 +31,13 @@
       ],
       "matches": [
         "https://www.google.com/search?*",
+        "https://www.google.ca/search?*",
+        "https://www.google.dk/search?*",
+        "https://www.google.de/search?*",
+        "https://www.google.de/search?*",
+        "https://www.google.com.au/search?*",
+        "https://www.google.co.uk/search?*",
+        "https://www.google.co.nz/search?*",
         "https://stackoverflow.com/search?*"
       ]
     }
